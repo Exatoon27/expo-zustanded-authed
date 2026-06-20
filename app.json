@@ -1,0 +1,73 @@
+{
+  "expo": {
+    "name": "MyApp",
+    "slug": "my-app",
+    "version": "1.0.0",
+    "scheme": "myapp",
+    "orientation": "portrait",
+    "icon": "./assets/images/icon.png",
+    "userInterfaceStyle": "automatic",
+    "updates": {
+      "url": "https://u.expo.dev/YOUR_EXPO_PROJECT_ID",
+      "enabled": true,
+      "fallbackToCacheTimeout": 0,
+      "checkAutomatically": "ON_LOAD"
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.yourcompany.myapp",
+      "infoPlist": {
+        "NSCameraUsageDescription": "Allow $(PRODUCT_NAME) to access your camera.",
+        "NSPhotoLibraryUsageDescription": "Allow $(PRODUCT_NAME) to access your photos."
+      }
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/images/adaptive-icon.png",
+        "backgroundColor": "#ffd3bf"
+      },
+      "package": "com.yourcompany.myapp",
+      "permissions": ["NOTIFICATIONS", "RECEIVE_BOOT_COMPLETED", "VIBRATE"]
+    },
+    "web": {
+      "bundler": "metro",
+      "output": "static",
+      "favicon": "./assets/images/favicon.png"
+    },
+    "plugins": [
+      "expo-router",
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/images/splash.png",
+          "resizeMode": "contain",
+          "backgroundColor": "#ffd3bf"
+        }
+      ],
+      [
+        "expo-notifications",
+        {
+          "color": "#ffffff",
+          "sounds": []
+        }
+      ],
+      "expo-secure-store",
+      "expo-updates",
+      "expo-status-bar"
+    ],
+    "experiments": {
+      "typedRoutes": true
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "YOUR_EXPO_PROJECT_ID"
+      }
+    }
+  }
+}

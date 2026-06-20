@@ -1,0 +1,50 @@
+name: Feature Request
+description: Suggest an improvement to the template itself.
+labels: [enhancement]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Feature requests should be about improving the **template** — making it a better
+        starting point for others. App-specific feature ideas are out of scope.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem are you trying to solve?
+      description: Describe what you can't do today, not the solution yet.
+      placeholder: 'When I fork this template and try to add X, I have to do Y manually every time...'
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed solution
+      description: What would you like to see in the template?
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives you've considered
+      description: Other approaches you thought about and why you ruled them out.
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Which part of the template does this affect?
+      options:
+        - Auth system / adapters
+        - Session storage
+        - Push notifications
+        - OTA updates
+        - Navigation / routing
+        - Styling / NativeWind
+        - TypeScript types
+        - Developer tooling (lint, format, CI)
+        - Documentation
+        - Other
+    validations:
+      required: true

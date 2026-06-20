@@ -1,0 +1,36 @@
+name: CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  validate:
+    name: Lint, Type-check & Format
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      # bun.lockb is intentionally excluded from this template's .gitignore
+      # so forks start with a fresh install. Remove --no-frozen-lockfile and
+      # commit bun.lockb if you want reproducible CI installs in your fork.
+      - name: Install dependencies
+        run: bun install
+
+      - name: Lint
+        run: bun run lint
+
+      - name: Type-check
+        run: bun run tsc
+
+      - name: Format check
+        run: bun run format:check

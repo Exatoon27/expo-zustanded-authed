@@ -1,0 +1,40 @@
+version: 2
+
+updates:
+  # JavaScript / TypeScript dependencies (reads package.json)
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+    open-pull-requests-limit: 8
+    # Group related packages to reduce PR noise
+    groups:
+      expo:
+        patterns:
+          - expo
+          - expo-*
+          - '@expo/*'
+      react-native:
+        patterns:
+          - react
+          - react-native
+          - react-native-*
+          - '@react-native/*'
+      dev-tools:
+        patterns:
+          - eslint
+          - eslint-*
+          - prettier
+          - prettier-*
+          - typescript
+          - typescript-eslint
+          - '@babel/*'
+          - '@types/*'
+
+  # Keep GitHub Actions pinned to fresh major versions
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday

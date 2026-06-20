@@ -1,0 +1,7 @@
+export const CONFIG = {
+  AUTH_BASE_URL: process.env.EXPO_PUBLIC_AUTH_BASE_URL ?? '',
+  GOOGLE_CLIENT_ID: process.env.EXPO_PUBLIC_GOOGLE_CLIENT_ID ?? '',
+  GOOGLE_CLIENT_ID_IOS: process.env.EXPO_PUBLIC_GOOGLE_CLIENT_ID_IOS ?? '',
+  FACEBOOK_APP_ID: process.env.EXPO_PUBLIC_FACEBOOK_APP_ID ?? '',
+  PROJECT_ID: process.env.EXPO_PUBLIC_PROJECT_ID ?? '',
+} as const;

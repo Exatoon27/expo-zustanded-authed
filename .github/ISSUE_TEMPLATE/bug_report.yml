@@ -1,0 +1,76 @@
+name: Bug Report
+description: Something in the template isn't working as documented.
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report a bug. Please fill out the sections below
+        so the issue can be reproduced and fixed quickly.
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Affected area
+      options:
+        - Auth — email/password
+        - Auth — phone/OTP
+        - Auth — Google
+        - Auth — Apple
+        - Auth — Facebook
+        - Session persistence (SecureStore)
+        - Push notifications
+        - OTA updates
+        - Navigation / routing
+        - TypeScript types
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: Fill in the versions relevant to your setup.
+      value: |
+        - Expo SDK:
+        - React Native:
+        - Platform (iOS / Android / Web):
+        - Device / simulator:
+        - Node / Bun version:
+        - OS (macOS / Windows / Linux):
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Fork the template
+        2. Configure `.env` with ...
+        3. Run `bun run start`
+        4. Tap ...
+        5. See error
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant logs or error output
+      render: shell
