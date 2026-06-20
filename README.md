@@ -1,8 +1,31 @@
+![Banner](.github/assets/banner.png)
+
 # Expo Zustanded & Authed
+
+![GitHub stars](https://img.shields.io/github/stars/Exatoon27/expo-zustanded-authed?style=for-the-badge&logo=github) ![GitHub forks](https://img.shields.io/github/forks/Exatoon27/expo-zustanded-authed?style=for-the-badge&logo=github) ![GitHub issues](https://img.shields.io/github/issues/Exatoon27/expo-zustanded-authed?style=for-the-badge&logo=github) ![Last commit](https://img.shields.io/github/last-commit/Exatoon27/expo-zustanded-authed?style=for-the-badge&logo=github) ![React Native](https://img.shields.io/badge/React%20Native-61DAFB?style=for-the-badge&logo=react&logoColor=white) ![Tailwind CSS](https://img.shields.io/badge/Tailwind%20CSS-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white) ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white) ![License](https://img.shields.io/badge/license-MIT-green?style=for-the-badge)
+
+## 📑 Table of Contents
+
+- [Description](#-description)
+- [What's included](#-whats-included)
+- [Quick Setup](#-quick-setup)
+- [Setup Checklist](#-setup-checklist)
+- [Auth adapter pattern](#-auth-adapter-pattern)
+- [OTA updates](#-ota-updates)
+- [Push notifications](#-push-notifications)
+- [Internationalization](#-internationalization)
+- [Project structure](#-project-structure)
+- [Auth flow](#-auth-flow)
+- [Scripts](#-scripts)
+- [Tech stack](#-tech-stack)
+- [Contributing](#-contributing)
+- [License](#-license)
+
+## 📖 Description
 
 A production-ready [Expo](https://expo.dev) (React Native) template with a fully wired authentication system, push notifications, and OTA updates. Fork it, configure your providers, and start building — without setting up auth from scratch.
 
-## What's included
+## 📦 What's included
 
 - **Auth system** — email/password, phone/OTP (SMS + WhatsApp), Google, Apple, and Facebook, all built as an interfaced adapter pattern so you can swap backends in two lines
 - **Persistent sessions** — sessions survive app restarts via `expo-secure-store`
@@ -16,7 +39,7 @@ A production-ready [Expo](https://expo.dev) (React Native) template with a fully
 
 ---
 
-## Quick setup
+## ⚡ Quick setup
 
 Run the interactive setup script — it installs dependencies, patches `app.json`, fills `.env`, and runs `eas login` + `eas init` for you:
 
@@ -32,7 +55,7 @@ Or follow the manual checklist below.
 
 ---
 
-## Setup checklist
+## 📝 Setup checklist
 
 Complete every step below after forking. The app will not fully work until all items are checked.
 
@@ -54,7 +77,7 @@ Complete every step below after forking. The app will not fully work until all i
 
 ---
 
-## Auth adapter pattern
+## 🧩 Auth adapter pattern
 
 All auth calls go through a single `AuthAdapter` interface (`utils/auth/adapters/types.ts`). The default implementation is `RestApiAdapter`, which calls your backend REST endpoints. To swap:
 
@@ -92,7 +115,7 @@ The `SupabaseAdapter` stub lives at `utils/auth/adapters/SupabaseAdapter.ts` wit
 
 ---
 
-## OTA updates
+## ✈ OTA updates
 
 This template uses `expo-updates` to deliver JavaScript bundle updates without going through the app store.
 
@@ -123,7 +146,7 @@ const { isChecking, isUpdateAvailable, applyUpdate } = useOtaUpdate();
 
 ---
 
-## Push notifications
+## 🔔 Push notifications
 
 The push token is registered on launch and stored in `notificationStore`. To send it to your backend:
 
@@ -137,7 +160,7 @@ const token = useNotificationStore.getState().pushToken;
 
 ---
 
-## Internationalization
+## 🌎 Internationalization
 
 The template ships English (`en`) and Spanish (`es`). Language is detected from the device locale on first launch and persisted in `AsyncStorage`. Users can also switch language in-app from the Profile screen.
 
@@ -153,7 +176,7 @@ Translation keys are fully typed — `tsc` will catch a missing key at compile t
 
 ---
 
-## Project structure
+## 🗺 Project structure
 
 ```text
 /app
@@ -199,7 +222,7 @@ Translation keys are fully typed — `tsc` will catch a missing key at compile t
 
 ---
 
-## Auth flow
+## 🔐 Auth flow
 
 ```text
 Screen → Zustand store action → AuthAdapter → REST API / Supabase / etc.
@@ -211,7 +234,7 @@ On app launch, `authStore._initialize()` reads tokens from SecureStore and calls
 
 ---
 
-## Scripts
+## 🪛 Scripts
 
 ```bash
 bun install              # Install dependencies
@@ -227,7 +250,7 @@ eas update --channel production   # Push OTA update
 
 ---
 
-## Tech stack
+## 🛠 Tech stack
 
 | Tool                                                                           | Role                          |
 | ------------------------------------------------------------------------------ | ----------------------------- |
@@ -244,6 +267,19 @@ eas update --channel production   # Push OTA update
 | TypeScript                                                                     | Type safety                   |
 | Bun.js                                                                         | Runtime & package manager     |
 
-## License
+## 👥 Contributing
 
-MIT
+Contributions are welcome! Here's the standard flow:
+
+1. **Fork** the repository
+2. **Clone** your fork: `git clone https://github.com/Exatoon27/expo-zustanded-authed.git`
+3. **Branch**: `git checkout -b feature/your-feature`
+4. **Commit**: `git commit -m 'feat: add some feature'`
+5. **Push**: `git push origin feature/your-feature`
+6. **Open** a pull request
+
+Please follow the existing code style and include tests for new behavior where applicable.
+
+## 📜 License
+
+This project is licensed under the **MIT** License.
