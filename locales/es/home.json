@@ -1,0 +1,7 @@
+{
+  "greeting": "Hola, {{name}} 👋",
+  "welcome": "Bienvenido a tu app.",
+  "unread_one": "Tienes {{count}} notificación sin leer.",
+  "unread_other": "Tienes {{count}} notificaciones sin leer.",
+  "your_account": "Tu cuenta"
+}

@@ -1,0 +1,7 @@
+{
+  "invalid_email": "Enter a valid email address.",
+  "password_too_short": "Password must be at least 8 characters.",
+  "name_required": "Name is required.",
+  "invalid_phone": "Enter a valid phone number.",
+  "generic": "Something went wrong. Please try again."
+}

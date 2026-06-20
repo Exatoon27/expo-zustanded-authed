@@ -1,4 +1,5 @@
 import { Link } from 'expo-router';
+import { useTranslation } from 'react-i18next';
 import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
 
 import { EmailPasswordForm } from '@/components/auth/EmailPasswordForm';
@@ -8,6 +9,7 @@ import { useAuthStore } from '@/store/authStore';
 export default function LoginScreen() {
   const { signInWithEmail, error, clearError, status } = useAuthStore();
   const loading = status === 'loading';
+  const { t } = useTranslation(['common', 'auth']);
 
   return (
     <ScrollView
@@ -15,8 +17,8 @@ export default function LoginScreen() {
       contentContainerClassName="p-6 justify-center flex-grow"
       keyboardShouldPersistTaps="handled"
     >
-      <Text className="text-3xl font-bold text-neutral-900 mb-1">Welcome back</Text>
-      <Text className="text-neutral-500 mb-8">Sign in to continue</Text>
+      <Text className="text-3xl font-bold text-neutral-900 mb-1">{t('auth:welcome_back')}</Text>
+      <Text className="text-neutral-500 mb-8">{t('auth:sign_in_to_continue')}</Text>
 
       <EmailPasswordForm
         mode="login"
@@ -28,14 +30,14 @@ export default function LoginScreen() {
       <TouchableOpacity onPress={clearError}>
         <Link href="/(auth)/forgot-password" asChild>
           <Text className="text-center text-sm text-primary-600 font-medium mt-3 mb-6">
-            Forgot password?
+            {t('auth:forgot_password')}
           </Text>
         </Link>
       </TouchableOpacity>
 
       <View className="flex-row items-center mb-6">
         <View className="flex-1 h-px bg-neutral-200" />
-        <Text className="mx-4 text-sm text-neutral-400">or</Text>
+        <Text className="mx-4 text-sm text-neutral-400">{t('or')}</Text>
         <View className="flex-1 h-px bg-neutral-200" />
       </View>
 
@@ -44,16 +46,16 @@ export default function LoginScreen() {
       <Link href="/(auth)/phone-login" asChild>
         <TouchableOpacity className="mt-4">
           <Text className="text-center text-sm text-primary-600 font-medium">
-            Sign in with phone number
+            {t('auth:sign_in_with_phone')}
           </Text>
         </TouchableOpacity>
       </Link>
 
       <View className="flex-row justify-center mt-8">
-        <Text className="text-neutral-500 text-sm">Don't have an account? </Text>
+        <Text className="text-neutral-500 text-sm">{t('auth:no_account')}</Text>
         <Link href="/(auth)/register" asChild>
           <TouchableOpacity>
-            <Text className="text-primary-600 font-semibold text-sm">Sign up</Text>
+            <Text className="text-primary-600 font-semibold text-sm">{t('auth:sign_up')}</Text>
           </TouchableOpacity>
         </Link>
       </View>

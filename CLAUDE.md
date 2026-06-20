@@ -52,7 +52,7 @@ File-based routing via Expo Router. Auth guards live in layout files:
 
 Auth state lives in a **Zustand** store (`store/authStore.ts`). All auth actions flow through a swappable `AuthAdapter` interface:
 
-```
+```text
 Screen → authStore action → AuthAdapter (REST/Supabase/etc.) → sessionStorage (SecureStore)
 ```
 
@@ -84,6 +84,26 @@ eas update --channel production --message "what changed"
 
 A new native build is required when adding/removing native packages or changing `app.json` plugins.
 
+### Internationalization — `/locales` + `/i18n` + `/store/i18nStore.ts`
+
+Multi-language support via `i18next` + `react-i18next` + `expo-localization`. The template ships English and Spanish.
+
+- **Translation files**: `locales/en/` and `locales/es/` — 5 namespaces: `common`, `auth`, `errors`, `home`, `profile`
+- **i18n singleton**: `i18n/index.ts` — initialized with static resources; `compatibilityJSON: 'v4'` for Hermes
+- **Supported languages**: `i18n/config.ts` → `SUPPORTED_LANGUAGES` array and `LanguageCode` type
+- **Store**: `store/i18nStore.ts` — `_initialize` (reads AsyncStorage → device locale → `'en'`), `setLanguage` (persists + calls `i18n.changeLanguage`)
+- **Type safety**: `types/i18n.ts` — module augmentation so every `t()` call is checked against JSON keys at compile time
+- **Language picker**: `components/ui/LanguageSelector.tsx` — shown in the Profile screen
+- **OS-level locale declaration**: declared in `app.json` via the `expo-localization` config plugin (enables per-app language in iOS/Android system settings)
+
+**To add a new language:**
+
+1. Create `locales/{code}/` with the same 5 JSON files as `en/`
+2. Add the locale to the `resources` object in `locales/index.ts`
+3. Add an entry to `SUPPORTED_LANGUAGES` in `i18n/config.ts`
+4. Add the locale code to `supportedLocales.ios` and `supportedLocales.android` in `app.json`
+5. Trigger a new native build (the `app.json` plugin change requires it)
+
 ### Key directories
 
 | Path                   | Purpose                                                                 |
@@ -102,7 +122,7 @@ A new native build is required when adding/removing native packages or changing 
 
 ### Data flow
 
-```
+```text
 Screen → Zustand store action → AuthAdapter → backend API
                                ↓
                          sessionStorage (SecureStore)

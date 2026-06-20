@@ -1,0 +1,11 @@
+{
+  "title": "Perfil",
+  "sign_out": "Cerrar sesión",
+  "sign_out_confirm": "¿Estás seguro de que quieres cerrar sesión?",
+  "name": "Nombre",
+  "email": "Correo electrónico",
+  "phone": "Teléfono",
+  "member_since": "Miembro desde",
+  "push_token": "Token de notificación",
+  "language": "Idioma"
+}

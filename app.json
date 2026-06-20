@@ -56,7 +56,16 @@
       ],
       "expo-secure-store",
       "expo-updates",
-      "expo-status-bar"
+      "expo-status-bar",
+      [
+        "expo-localization",
+        {
+          "supportedLocales": {
+            "ios": ["en", "es"],
+            "android": ["en", "es"]
+          }
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true

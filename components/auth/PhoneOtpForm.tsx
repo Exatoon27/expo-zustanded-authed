@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Text, TouchableOpacity, View } from 'react-native';
 
 import { Button } from '@/components/ui/Button';
@@ -15,11 +16,12 @@ export function PhoneOtpForm({ onSubmit, loading, error }: PhoneOtpFormProps) {
   const [phone, setPhone] = useState('');
   const [channel, setChannel] = useState<OtpChannel>('sms');
   const [fieldError, setFieldError] = useState('');
+  const { t } = useTranslation(['auth', 'errors']);
 
   function validate(): boolean {
     const cleaned = phone.replace(/\D/g, '');
     if (cleaned.length < 7) {
-      setFieldError('Enter a valid phone number.');
+      setFieldError(t('errors:invalid_phone'));
       return false;
     }
     setFieldError('');
@@ -34,8 +36,8 @@ export function PhoneOtpForm({ onSubmit, loading, error }: PhoneOtpFormProps) {
   return (
     <View>
       <Input
-        label="Phone number"
-        placeholder="+1 555 000 0000"
+        label={t('phone_label')}
+        placeholder={t('phone_placeholder')}
         value={phone}
         onChangeText={setPhone}
         error={fieldError}
@@ -44,7 +46,7 @@ export function PhoneOtpForm({ onSubmit, loading, error }: PhoneOtpFormProps) {
         autoComplete="tel"
       />
 
-      <Text className="mb-2 text-sm font-medium text-neutral-700">Send code via</Text>
+      <Text className="mb-2 text-sm font-medium text-neutral-700">{t('send_code_via')}</Text>
       <View className="mb-4 flex-row gap-3">
         {(['sms', 'whatsapp'] as OtpChannel[]).map((ch) => (
           <TouchableOpacity
@@ -59,7 +61,7 @@ export function PhoneOtpForm({ onSubmit, loading, error }: PhoneOtpFormProps) {
                 channel === ch ? 'text-primary-600' : 'text-neutral-500'
               }`}
             >
-              {ch === 'sms' ? 'SMS' : 'WhatsApp'}
+              {ch === 'sms' ? t('sms') : t('whatsapp')}
             </Text>
           </TouchableOpacity>
         ))}
@@ -69,7 +71,7 @@ export function PhoneOtpForm({ onSubmit, loading, error }: PhoneOtpFormProps) {
         <Text className="mb-4 rounded-lg bg-red-50 px-3 py-2 text-sm text-red-600">{error}</Text>
       ) : null}
 
-      <Button label="Send code" onPress={handleSubmit} loading={loading} />
+      <Button label={t('send_code')} onPress={handleSubmit} loading={loading} />
     </View>
   );
 }

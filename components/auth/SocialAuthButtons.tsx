@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Platform, Text, TouchableOpacity, View } from 'react-native';
 
 import { isAppleSignInAvailable, signInWithApple } from '@/utils/auth/strategies/apple';
@@ -12,6 +13,7 @@ interface SocialAuthButtonsProps {
 
 export function SocialAuthButtons({ onError, disabled }: SocialAuthButtonsProps) {
   const [appleAvailable, setAppleAvailable] = useState(false);
+  const { t } = useTranslation('auth');
 
   useEffect(() => {
     if (Platform.OS === 'ios') {
@@ -45,10 +47,10 @@ export function SocialAuthButtons({ onError, disabled }: SocialAuthButtonsProps)
 
   return (
     <View className="gap-3">
-      <SocialButton label="Continue with Google" onPress={handleGoogle} disabled={disabled} />
-      <SocialButton label="Continue with Facebook" onPress={handleFacebook} disabled={disabled} />
+      <SocialButton label={t('google')} onPress={handleGoogle} disabled={disabled} />
+      <SocialButton label={t('facebook')} onPress={handleFacebook} disabled={disabled} />
       {appleAvailable && (
-        <SocialButton label="Continue with Apple" onPress={handleApple} disabled={disabled} dark />
+        <SocialButton label={t('apple')} onPress={handleApple} disabled={disabled} dark />
       )}
     </View>
   );

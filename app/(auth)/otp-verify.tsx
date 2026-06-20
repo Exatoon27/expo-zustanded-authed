@@ -1,4 +1,5 @@
 import { useLocalSearchParams } from 'expo-router';
+import { useTranslation } from 'react-i18next';
 import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
 
 import { OtpInput } from '@/components/auth/OtpInput';
@@ -10,6 +11,7 @@ export default function OtpVerifyScreen() {
   const { phone, channel } = useLocalSearchParams<{ phone: string; channel: OtpChannel }>();
   const { verifyOtp, sendOtp, error, status } = useAuthStore();
   const loading = status === 'loading';
+  const { t } = useTranslation('auth');
 
   async function handleComplete(code: string) {
     await verifyOtp(phone, code);
@@ -25,12 +27,14 @@ export default function OtpVerifyScreen() {
       contentContainerClassName="p-6 justify-center flex-grow"
       keyboardShouldPersistTaps="handled"
     >
-      {loading && <LoadingOverlay message="Verifying…" />}
+      {loading && <LoadingOverlay message={t('verifying')} />}
 
-      <Text className="text-3xl font-bold text-neutral-900 mb-1">Enter code</Text>
+      <Text className="text-3xl font-bold text-neutral-900 mb-1">{t('enter_code')}</Text>
       <Text className="text-neutral-500 mb-8">
-        We sent a 6-digit code to <Text className="font-semibold text-neutral-700">{phone}</Text>{' '}
-        via {channel === 'whatsapp' ? 'WhatsApp' : 'SMS'}.
+        {t('otp_sent', {
+          phone,
+          channel: channel === 'whatsapp' ? t('whatsapp') : t('sms'),
+        })}
       </Text>
 
       <OtpInput onComplete={handleComplete} disabled={loading} />
@@ -40,9 +44,9 @@ export default function OtpVerifyScreen() {
       ) : null}
 
       <View className="flex-row justify-center mt-4">
-        <Text className="text-neutral-500 text-sm">Didn't receive it? </Text>
+        <Text className="text-neutral-500 text-sm">{t('didnt_receive')}</Text>
         <TouchableOpacity onPress={handleResend} disabled={loading}>
-          <Text className="text-primary-600 font-semibold text-sm">Resend</Text>
+          <Text className="text-primary-600 font-semibold text-sm">{t('resend')}</Text>
         </TouchableOpacity>
       </View>
     </ScrollView>

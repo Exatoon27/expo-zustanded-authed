@@ -24,4 +24,12 @@ export const preferencesStorage = {
   async setNotificationsEnabled(enabled: boolean): Promise<void> {
     await AsyncStorage.setItem(KEYS.NOTIFICATIONS_ENABLED, String(enabled));
   },
+
+  async getLanguage(): Promise<string | null> {
+    return AsyncStorage.getItem(KEYS.LANGUAGE);
+  },
+
+  async setLanguage(lang: string): Promise<void> {
+    await AsyncStorage.setItem(KEYS.LANGUAGE, lang);
+  },
 };

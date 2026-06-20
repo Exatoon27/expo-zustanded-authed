@@ -7,6 +7,7 @@ A production-ready [Expo](https://expo.dev) (React Native) template with a fully
 - **Auth system** — email/password, phone/OTP (SMS + WhatsApp), Google, Apple, and Facebook, all built as an interfaced adapter pattern so you can swap backends in two lines
 - **Persistent sessions** — sessions survive app restarts via `expo-secure-store`
 - **Zustand store** — global auth state, no prop drilling
+- **Multi-language support** — `i18next` + `react-i18next` + `expo-localization`; ships English and Spanish; typed translation keys; in-app language picker; persists the user's choice across sessions
 - **Push notifications** — permissions, token registration, and foreground/background handlers wired at startup
 - **OTA updates** — `expo-updates` configured with `useOtaUpdate` hook; updates are checked on every cold launch
 - **NativeWind** — Tailwind CSS utility classes for React Native
@@ -42,14 +43,14 @@ Complete every step below after forking. The app will not fully work until all i
 | 3   | `eas login` then `eas init` (links your Expo account)                                           | terminal                                                 |
 | 4   | Replace `YOUR_EXPO_PROJECT_ID` in `app.json` with your real project ID                          | `app.json`                                               |
 | 5   | Set your app `name`, `slug`, `bundleIdentifier` (iOS), `package` (Android)                      | `app.json`                                               |
-| 7   | Add splash / icon images to `assets/images/`                                                    | `assets/images/`                                         |
-| 8   | Point `EXPO_PUBLIC_AUTH_BASE_URL` at your backend                                               | `.env`                                                   |
-| 9   | Create Google OAuth credentials (Web + iOS + Android client IDs)                                | [Google Cloud Console](https://console.cloud.google.com) |
-| 10  | Configure Apple Sign In (Service ID + key)                                                      | [Apple Developer](https://developer.apple.com)           |
-| 11  | Create a Facebook App and enable Facebook Login                                                 | [Meta for Developers](https://developers.facebook.com)   |
-| 12  | Configure your backend for Phone/OTP — expose `POST /auth/otp/send` and `POST /auth/otp/verify` | your backend                                             |
-| 13  | `eas build --profile development` to create a dev build on device                               | terminal                                                 |
-| 14  | `eas update --channel production` to push your first OTA update                                 | terminal                                                 |
+| 6   | Add splash / icon images to `assets/images/`                                                    | `assets/images/`                                         |
+| 7   | Point `EXPO_PUBLIC_AUTH_BASE_URL` at your backend                                               | `.env`                                                   |
+| 8   | Create Google OAuth credentials (Web + iOS + Android client IDs)                                | [Google Cloud Console](https://console.cloud.google.com) |
+| 9   | Configure Apple Sign In (Service ID + key)                                                      | [Apple Developer](https://developer.apple.com)           |
+| 10  | Create a Facebook App and enable Facebook Login                                                 | [Meta for Developers](https://developers.facebook.com)   |
+| 11  | Configure your backend for Phone/OTP — expose `POST /auth/otp/send` and `POST /auth/otp/verify` | your backend                                             |
+| 12  | `eas build --profile development` to create a dev build on device                               | terminal                                                 |
+| 13  | `eas update --channel production` to push your first OTA update                                 | terminal                                                 |
 
 ---
 
@@ -136,17 +137,42 @@ const token = useNotificationStore.getState().pushToken;
 
 ---
 
+## Internationalization
+
+The template ships English (`en`) and Spanish (`es`). Language is detected from the device locale on first launch and persisted in `AsyncStorage`. Users can also switch language in-app from the Profile screen.
+
+**Adding a new language:**
+
+1. Create `locales/{code}/` with the same 5 JSON files as `locales/en/` (`common`, `auth`, `errors`, `home`, `profile`)
+2. Register it in `locales/index.ts` (add to the `resources` object)
+3. Add an entry to `SUPPORTED_LANGUAGES` in `i18n/config.ts`
+4. Add the code to `supportedLocales.ios` and `supportedLocales.android` in `app.json`
+5. Trigger a new native build (step 4 is a plugin change)
+
+Translation keys are fully typed — `tsc` will catch a missing key at compile time.
+
+---
+
 ## Project structure
 
 ```text
 /app
-  _layout.tsx              ← Root layout; initializes auth, notifications, OTA
+  _layout.tsx              ← Root layout; initializes i18n, auth, notifications, OTA
   (auth)/                  ← Unauthenticated screens (login, register, otp, etc.)
   (tabs)/                  ← Authenticated screens (home, profile)
 
 /components
-  ui/                      ← Button, Input, LoadingOverlay
+  ui/                      ← Button, Input, LoadingOverlay, LanguageSelector
   auth/                    ← EmailPasswordForm, PhoneOtpForm, OtpInput, SocialAuthButtons
+
+/locales
+  en/                      ← English translations (common, auth, errors, home, profile)
+  es/                      ← Spanish translations
+  index.ts                 ← Bundles resources + exports Resources type for typed t()
+
+/i18n
+  index.ts                 ← i18next singleton (static resources, Hermes-safe config)
+  config.ts                ← SUPPORTED_LANGUAGES array + LanguageCode type
 
 /utils
   auth/
@@ -159,12 +185,13 @@ const token = useNotificationStore.getState().pushToken;
 /store
   authStore.ts             ← Zustand: user, token, status, all auth actions
   notificationStore.ts     ← Zustand: push token, unread count
+  i18nStore.ts             ← Zustand: current language, initialization, setLanguage
 
 /storage
   session.ts               ← SecureStore wrappers for tokens + user
-  preferences.ts           ← AsyncStorage wrappers for non-sensitive prefs
+  preferences.ts           ← AsyncStorage wrappers for non-sensitive prefs (theme, language)
 
-/types                     ← User, AuthResult, AuthStatus, OtpChannel, route params
+/types                     ← User, AuthResult, AuthStatus, OtpChannel, route params, i18n augmentation
 /constants                 ← routes.ts, config.ts (reads EXPO_PUBLIC_* env vars)
 /styles                    ← theme.ts (color, spacing, font tokens)
 /assets/images             ← icon.png, splash.png, adaptive-icon.png, favicon.png
@@ -206,12 +233,14 @@ eas update --channel production   # Push OTA update
 | ------------------------------------------------------------------------------ | ----------------------------- |
 | [Expo](https://expo.dev)                                                       | React Native framework        |
 | [Expo Router](https://expo.github.io/router)                                   | File-based navigation         |
-| [Zustand](https://github.com/pmndrs/zustand)                                   | State management              |
 | [expo-secure-store](https://docs.expo.dev/versions/latest/sdk/securestore/)    | Encrypted session storage     |
 | [expo-notifications](https://docs.expo.dev/versions/latest/sdk/notifications/) | Push notifications            |
+| [expo-localization](https://docs.expo.dev/versions/latest/sdk/localization/)   | Device locale detection       |
 | [expo-updates](https://docs.expo.dev/versions/latest/sdk/updates/)             | Over-the-air updates          |
-| [NativeWind](https://www.nativewind.dev)                                       | Tailwind CSS for React Native |
 | [EAS](https://expo.dev/eas)                                                    | Cloud builds + OTA delivery   |
+| [i18next](https://www.i18next.com)                                             | Internationalization core     |
+| [NativeWind](https://www.nativewind.dev)                                       | Tailwind CSS for React Native |
+| [Zustand](https://github.com/pmndrs/zustand)                                   | State management              |
 | TypeScript                                                                     | Type safety                   |
 | Bun.js                                                                         | Runtime & package manager     |
 

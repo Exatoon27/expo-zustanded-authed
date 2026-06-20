@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Text, View } from 'react-native';
 
 import { Button } from '@/components/ui/Button';
@@ -16,12 +17,13 @@ export function EmailPasswordForm({ mode, onSubmit, loading, error }: EmailPassw
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
+  const { t } = useTranslation(['auth', 'errors']);
 
   function validate(): boolean {
     const errors: Record<string, string> = {};
-    if (!email.includes('@')) errors.email = 'Enter a valid email address.';
-    if (password.length < 8) errors.password = 'Password must be at least 8 characters.';
-    if (mode === 'register' && !name.trim()) errors.name = 'Name is required.';
+    if (!email.includes('@')) errors.email = t('errors:invalid_email');
+    if (password.length < 8) errors.password = t('errors:password_too_short');
+    if (mode === 'register' && !name.trim()) errors.name = t('errors:name_required');
     setFieldErrors(errors);
     return Object.keys(errors).length === 0;
   }
@@ -35,8 +37,8 @@ export function EmailPasswordForm({ mode, onSubmit, loading, error }: EmailPassw
     <View>
       {mode === 'register' && (
         <Input
-          label="Full name"
-          placeholder="Jane Doe"
+          label={t('full_name_label')}
+          placeholder={t('full_name_placeholder')}
           value={name}
           onChangeText={setName}
           error={fieldErrors.name}
@@ -45,8 +47,8 @@ export function EmailPasswordForm({ mode, onSubmit, loading, error }: EmailPassw
         />
       )}
       <Input
-        label="Email"
-        placeholder="you@example.com"
+        label={t('email_label')}
+        placeholder={t('email_placeholder')}
         value={email}
         onChangeText={setEmail}
         error={fieldErrors.email}
@@ -56,8 +58,8 @@ export function EmailPasswordForm({ mode, onSubmit, loading, error }: EmailPassw
         autoComplete="email"
       />
       <Input
-        label="Password"
-        placeholder="••••••••"
+        label={t('password_label')}
+        placeholder={t('password_placeholder')}
         value={password}
         onChangeText={setPassword}
         error={fieldErrors.password}
@@ -69,7 +71,7 @@ export function EmailPasswordForm({ mode, onSubmit, loading, error }: EmailPassw
         <Text className="mb-4 rounded-lg bg-red-50 px-3 py-2 text-sm text-red-600">{error}</Text>
       ) : null}
       <Button
-        label={mode === 'login' ? 'Sign in' : 'Create account'}
+        label={mode === 'login' ? t('sign_in') : t('create_account')}
         onPress={handleSubmit}
         loading={loading}
       />

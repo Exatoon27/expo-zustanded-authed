@@ -1,5 +1,6 @@
 import { Tabs, useRouter } from 'expo-router';
 import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { LoadingOverlay } from '@/components/ui/LoadingOverlay';
 import { useAuthStore } from '@/store/authStore';
@@ -7,6 +8,7 @@ import { useAuthStore } from '@/store/authStore';
 export default function TabsLayout() {
   const { status } = useAuthStore();
   const router = useRouter();
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (status === 'unauthenticated') {
@@ -34,13 +36,13 @@ export default function TabsLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          title: 'Home',
+          title: t('tab_home'),
         }}
       />
       <Tabs.Screen
         name="profile"
         options={{
-          title: 'Profile',
+          title: t('tab_profile'),
         }}
       />
     </Tabs>

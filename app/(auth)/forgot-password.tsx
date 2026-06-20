@@ -1,5 +1,6 @@
 import { useRouter } from 'expo-router';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Alert, ScrollView, Text } from 'react-native';
 
 import { Button } from '@/components/ui/Button';
@@ -10,24 +11,25 @@ const adapter = getAuthAdapter();
 
 export default function ForgotPasswordScreen() {
   const router = useRouter();
+  const { t } = useTranslation(['common', 'auth', 'errors']);
   const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
   async function handleSubmit() {
     if (!email.includes('@')) {
-      setError('Enter a valid email address.');
+      setError(t('errors:invalid_email'));
       return;
     }
     setError('');
     setLoading(true);
     try {
       await adapter.forgotPassword(email);
-      Alert.alert('Check your inbox', `We sent a reset link to ${email}.`, [
-        { text: 'OK', onPress: () => router.back() },
+      Alert.alert(t('auth:check_inbox'), t('auth:reset_link_sent', { email }), [
+        { text: t('ok'), onPress: () => router.back() },
       ]);
     } catch {
-      setError('Something went wrong. Please try again.');
+      setError(t('errors:generic'));
     } finally {
       setLoading(false);
     }
@@ -39,14 +41,12 @@ export default function ForgotPasswordScreen() {
       contentContainerClassName="p-6 justify-center flex-grow"
       keyboardShouldPersistTaps="handled"
     >
-      <Text className="text-3xl font-bold text-neutral-900 mb-1">Reset password</Text>
-      <Text className="text-neutral-500 mb-8">
-        Enter your email and we'll send you a reset link.
-      </Text>
+      <Text className="text-3xl font-bold text-neutral-900 mb-1">{t('auth:reset_password')}</Text>
+      <Text className="text-neutral-500 mb-8">{t('auth:reset_password_subtitle')}</Text>
 
       <Input
-        label="Email"
-        placeholder="you@example.com"
+        label={t('auth:email_label')}
+        placeholder={t('auth:email_placeholder')}
         value={email}
         onChangeText={setEmail}
         error={error}
@@ -55,10 +55,10 @@ export default function ForgotPasswordScreen() {
         textContentType="emailAddress"
       />
 
-      <Button label="Send reset link" onPress={handleSubmit} loading={loading} />
+      <Button label={t('auth:send_reset_link')} onPress={handleSubmit} loading={loading} />
 
       <Button
-        label="Back to sign in"
+        label={t('back_to_sign_in')}
         onPress={() => router.back()}
         variant="ghost"
         className="mt-3"
