@@ -1,4 +1,4 @@
-![Banner](.github/assets/banner.png)
+![Banner](https://github.com/Exatoon27/expo-zustanded-authed/blob/master/.github/assets/Banner.png)
 
 # Expo Zustanded & Authed
 
