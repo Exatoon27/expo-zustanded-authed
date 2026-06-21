@@ -84,6 +84,7 @@ j.expo.name                 = process.env.APP_NAME;
 j.expo.slug                 = process.env.APP_SLUG;
 j.expo.ios.bundleIdentifier = process.env.BUNDLE_ID;
 j.expo.android.package      = process.env.PACKAGE_NAME;
+if (j.expo?.extra?.eas?.projectId === 'YOUR_EXPO_PROJECT_ID') delete j.expo.extra.eas.projectId;
 writeFileSync('app.json', JSON.stringify(j, null, 2) + '\n');
 "
 ok "app.json updated"
